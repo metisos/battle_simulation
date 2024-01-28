@@ -1,0 +1,48 @@
+class MilitaryUnit:
+    def __init__(self, name, units, tanks=0, artillery=0, air_support=0, terrain_advantage=0):
+        self.name = name
+        self.units = units
+        self.tanks = tanks
+        self.artillery = artillery
+        self.air_support = air_support
+        self.terrain_advantage = terrain_advantage
+        self.strength = self.calculate_strength()
+
+    def calculate_strength(self):
+        # Each tank, artillery, and air support adds a fixed value to the strength
+        # Terrain advantage is a multiplier to the total strength
+        return (self.units + self.tanks * 5 + self.artillery * 4 + self.air_support * 6) * (1 + self.terrain_advantage)
+
+    def take_damage(self, damage):
+        # Convert damage to loss of units
+        self.units -= damage // 10
+        if self.units < 0:
+            self.units = 0
+        # Recalculate strength after taking damage
+        self.strength = self.calculate_strength()
+
+def simulate_battle(unit1, unit2):
+    round = 0
+    while unit1.units > 0 and unit2.units > 0:
+        round += 1
+        print(f"Round {round}: {unit1.name} vs {unit2.name}")
+
+        # Both units inflict damage equal to their current strength
+        unit1.take_damage(unit2.strength)
+        unit2.take_damage(unit1.strength)
+
+        print(f"{unit1.name} Units: {unit1.units}, {unit2.name} Units: {unit2.units}")
+
+        if unit1.units <= 0:
+            print(f"{unit2.name} wins!")
+            break
+        elif unit2.units <= 0:
+            print(f"{unit1.name} wins!")
+            break
+
+# Example units
+blue_army = MilitaryUnit("Blue Army", 1000, tanks=30, artillery=20, air_support=10, terrain_advantage=0.1)
+red_army = MilitaryUnit("Red Army", 1200, tanks=20, artillery=25, air_support=15, terrain_advantage=0)
+
+# Simulate battle
+simulate_battle(blue_army, red_army)
