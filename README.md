@@ -1,4 +1,4 @@
-Overview
+
 This project is a Python-based simulation of a battle between two opposing military units. It provides a simplified but engaging representation of military strategy and tactics, with units having varying strengths and capabilities.
 
 Features
